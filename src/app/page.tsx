@@ -1,9 +1,11 @@
 "use client";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
 
 import React from "react";
 
 export default function Login() {
+  const router = useRouter();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [seePassword, setSeePassword] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState<string>("");
@@ -24,7 +26,9 @@ export default function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        const token = data.token;
+        localStorage.setItem("token", token);
+        router.push("/dashboard");
       }
       if (!response.ok) {
         const data = await response.json();
